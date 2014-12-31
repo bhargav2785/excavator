@@ -77,10 +77,11 @@ class Excavator
 		$postFix            = $siteCount > 1 ? 's' : '';
 
 		if ($sites) {
-			$this->__debug("Great, ({$siteCount}) site{$postFix} found.\n\n");
+			$this->__debug("Great, ({$siteCount}) site{$postFix} found\n\n");
 			$this->_processSites($sites);
 		} else {
-			$this->__debug("Sorry, looks like `{$this->siteUrl}` is not available in http://httparchive.org database.\n");
+			$this->__debug("Sorry, looks like `{$this->siteUrl}` is not available in http://httparchive.org database\n");
+			$this->__debug("But you can add your site by visiting http://httparchive.org/addsite.php\n");
 			exit(1);
 		}
 	}
@@ -114,7 +115,7 @@ class Excavator
 		} else if ($input === 'n' || $input === 'no') {
 			$this->__debug("Sorry, please refine your search query...\n");
 		} else {
-			$this->__debug("'{$input}' is not a valid option... exiting.\n");
+			$this->__debug("'{$input}' is not a valid option... exiting\n");
 		}
 	}
 
@@ -146,7 +147,7 @@ class Excavator
 				$this->_processSite($sites[$key]);
 			}
 		} else {
-			$this->__debug("Please select a number from above options only or enter `all`.\n");
+			$this->__debug("Please select a number from above options only or enter `all`\n");
 			exit(1);
 		}
 	}
@@ -256,7 +257,7 @@ class Excavator
 	 * Search and download the .har file containing the full details for this run
 	 */
 	private function _downloadDetailsHarFile($htmlSource, $runDate) {
-		$this->__debug("          downloading .har file with full details.\n");
+		$this->__debug("          downloading .har file with full details\n");
 
 		if ($this->dryRun) {
 			return true;
@@ -266,7 +267,7 @@ class Excavator
 		$matches = preg_grep("/http:\/\/httparchive\.webpagetest\.org\/export\.php/i", $a);
 
 		if (empty($matches)) {
-			$this->__debug("               sorry no download link for .har file found.\n");
+			$this->__debug("               sorry no download link for .har file found\n");
 
 			return false;
 		}
@@ -281,7 +282,7 @@ class Excavator
 				shell_exec($command);
 				$this->__debug("          downloaded...   {$filePath}\n");
 			} else {
-				$this->__debug("               sorry the download link for .har file can not be found.\n");
+				$this->__debug("               sorry the download link for .har file can not be found\n");
 			}
 		}
 	}
@@ -293,7 +294,7 @@ class Excavator
 	 * Search and download the .csv file containing details for all http requests made for this run
 	 */
 	private function _downloadRequestCsvFile($htmlSource, $runDate) {
-		$this->__debug("          downloading .csv file with all requests.\n");
+		$this->__debug("          downloading .csv file with all requests\n");
 
 		if ($this->dryRun) {
 			return true;
@@ -303,7 +304,7 @@ class Excavator
 		$matches = preg_grep("/download\.php/i", $a);
 
 		if (empty($matches)) {
-			$this->__debug("               sorry no download link for .csv file found.\n");
+			$this->__debug("               sorry no download link for .csv file found\n");
 
 			return false;
 		}
@@ -319,7 +320,7 @@ class Excavator
 				shell_exec($command);
 				$this->__debug("          downloaded...   {$filePath}\n");
 			} else {
-				$this->__debug("               sorry the download link for .csv file can not be found.\n");
+				$this->__debug("               sorry the download link for .csv file can not be found\n");
 			}
 		}
 	}
@@ -342,7 +343,7 @@ class Excavator
 	 */
 	private function __debug($message = PHP_EOL) {
 		if ($this->debug) {
-			echo "$message";
+			echo "> $message";
 		}
 	}
 }
@@ -361,8 +362,8 @@ if (isset($args['h']) || isset($args['help'])) {
 }
 
 if (empty($args['s']) || empty($args['d'])) {
-	print "\nBoth `s` and `d` arguments required. Please try again ...\n";
-	print "Usage: ./excavator.php -s http://www.example.com -d /tmp/data/ [--dry] \n\n";
+	print "\n> Both `s` and `d` arguments required. Please try again ...\n";
+	print "> Usage: ./excavator.php -s http://www.example.com -d /tmp/data/ [--dry] \n\n";
 	exit(1);
 }
 
@@ -375,13 +376,13 @@ $site = $args['s'];
 $dir  = realpath($args['d']);
 
 if (!$dir || !is_dir($dir) || !is_writable($dir)) {
-	print "`{$args['d']}` is not a directory. Make sure you have that directory writable ...\n";
+	print "> `{$args['d']}` is not a directory. Make sure you have that directory writable ...\n";
 	exit(1);
 }
 
-print "Download folder set to {$dir}\n";
+print "> Download folder set to {$dir}\n";
 
 $excavator = new Excavator($site, $dir, $dryRun);
 $excavator->init();
-print "Finished\n";
+print "> Finished\n";
 // END CLI
