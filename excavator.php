@@ -1,7 +1,10 @@
 <?php
 /**
- * @author  Bhargav Vadher
- * @version 0.1 2014-12-25 12:24AM (yes it was a Christmas night!)
+ * @author      Bhargav Vadher
+ * @version     0.1 2014-12-25 12:24AM (yes it was a Christmas night!)
+ * @description This script crawls http://httparchive.org for your site and downloads necessary .har and .csv files.
+ *              You can later use these files to analyze your site's behavior or performance.
+ * @license     Publicly available to modify and redistribute.
  */
 
 /**
@@ -9,6 +12,11 @@
  */
 class Excavator
 {
+	/**
+	 * A base url for the site
+	 */
+	const BASE_URL = 'http://httparchive.org/';
+
 	/**
 	 * A base url for the site search functionality
 	 */
@@ -229,10 +237,6 @@ class Excavator
 	private function _processSiteRun($runDate, $url) {
 		$this->__debug("     processing the run for {$runDate}\n");
 
-		if ($this->dryRun) {
-			return true;
-		}
-
 		$site = urlencode($url);
 		$date = str_replace(" ", "%20", $runDate);
 
@@ -240,11 +244,29 @@ class Excavator
 		$siteRunUrl   = "{$viewSiteBase}?u={$site}&l={$date}";
 
 		$htmlSource = $this->_getHtmlSourceByUrl($siteRunUrl);
-		$a          = explode(PHP_EOL, $htmlSource);
-		$matches    = preg_grep("/http:\/\/httparchive.webpagetest.org\/export.php/i", $a);
+
+		$this->_downloadDetailsHarFile($htmlSource, $runDate);
+		$this->_downloadRequestCsvFile($htmlSource, $runDate);
+	}
+
+	/**
+	 * @param string $htmlSource
+	 * @param string $runDate
+	 *
+	 * Search and download the .har file containing the full details for this run
+	 */
+	private function _downloadDetailsHarFile($htmlSource, $runDate) {
+		$this->__debug("          downloading .har file with full details.\n");
+
+		if ($this->dryRun) {
+			return true;
+		}
+
+		$a       = explode(PHP_EOL, $htmlSource);
+		$matches = preg_grep("/http:\/\/httparchive\.webpagetest\.org\/export\.php/i", $a);
 
 		if (empty($matches)) {
-			$this->__debug("     sorry no download link for .har file found.\n");
+			$this->__debug("               sorry no download link for .har file found.\n");
 
 			return false;
 		}
@@ -254,16 +276,52 @@ class Excavator
 				$this->__debug("          downloading...  {$downloadMatches[1]}\n");
 				$fileName = str_replace(" ", "-", $runDate) . '.har';
 				$filePath = rtrim($this->writeDir, '/') . "/{$fileName}";
-				$command  = "curl -s -o {$filePath} {$downloadMatches[1]}";
+				$command  = "curl -s -o {$filePath} '{$downloadMatches[1]}'";
 
 				shell_exec($command);
 				$this->__debug("          downloaded...   {$filePath}\n");
 			} else {
-				$this->__debug("     sorry the download link for .har file can not be found.\n");
+				$this->__debug("               sorry the download link for .har file can not be found.\n");
 			}
 		}
+	}
 
-		return true;
+	/**
+	 * @param string $htmlSource
+	 * @param string $runDate
+	 *
+	 * Search and download the .csv file containing details for all http requests made for this run
+	 */
+	private function _downloadRequestCsvFile($htmlSource, $runDate) {
+		$this->__debug("          downloading .csv file with all requests.\n");
+
+		if ($this->dryRun) {
+			return true;
+		}
+
+		$a       = explode(PHP_EOL, $htmlSource);
+		$matches = preg_grep("/download\.php/i", $a);
+
+		if (empty($matches)) {
+			$this->__debug("               sorry no download link for .csv file found.\n");
+
+			return false;
+		}
+
+		foreach ($matches as $key => $downloadUrl) {
+			if (preg_match("/\"(download\.php\?p=[0-9]+\&format=csv)\"/i", $downloadUrl, $downloadMatches)) {
+				$fileName      = str_replace(" ", "-", $runDate) . '.csv';
+				$filePath      = rtrim($this->writeDir, '/') . "/{$fileName}";
+				$remoteCsvPath = self::BASE_URL . $downloadMatches[1];
+				$this->__debug("          downloading...  {$remoteCsvPath}\n");
+				$command = "curl -s -o {$filePath} '{$remoteCsvPath}'";
+
+				shell_exec($command);
+				$this->__debug("          downloaded...   {$filePath}\n");
+			} else {
+				$this->__debug("               sorry the download link for .csv file can not be found.\n");
+			}
+		}
 	}
 
 	/**
@@ -290,11 +348,21 @@ class Excavator
 }
 
 // START CLI
-$args = getopt("s:d:", array('dry::'));
+$args = getopt("s:d:h::", array('dry::', 'help::'));
+
+if (isset($args['h']) || isset($args['help'])) {
+	print "   -s          (mandatory) is used to take site url\n";
+	print "   -d          (mandatory) is used to take local path where the files will be downloaded\n";
+	print "   --dry       (optional) is used for dry run(no download)\n";
+	print "   -h,--help   (optional) is used to get help about this script\n";
+	print "Example:\n";
+	print "./excavator.php -s http://www.example.com -d /tmp/data/ [--dry, -h, --help] \n\n";
+	exit(0);
+}
 
 if (empty($args['s']) || empty($args['d'])) {
 	print "\nBoth `s` and `d` arguments required. Please try again ...\n";
-	print "Usage: ./excavator.php -s http://www.example.com -d /tmp/data/ \n\n";
+	print "Usage: ./excavator.php -s http://www.example.com -d /tmp/data/ [--dry] \n\n";
 	exit(1);
 }
 
