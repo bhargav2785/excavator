@@ -5,7 +5,7 @@ Excavator is a simple PHP script that downloads archived data from httparchive.o
 It has pretty straight forward downlod and installation guide.
 
 ~~~
-# install composer if you have not already
+## install composer if you have not already
 > curl -sS https://getcomposer.org/installer | php
 > git clone https://github.com/bhargav2785/excavator.git
 > cd excavator
@@ -33,6 +33,17 @@ Where do you want to store it? Provide a path on your system.
 **`--dry`**, optional
 
 If this option is set, the script will run normally except it won't actually download files.
+
+## Examples
+There are two possible examples 1) dry run and 2) regular run
+
+~~~
+## search and process only
+> php excavator.php -s http://www.yahoo.com -d /tmp/data --dry
+
+## search, process and download
+> php excavator.php -s http://www.yahoo.com -d /tmp/data
+~~~
 
 
 ## Overview
