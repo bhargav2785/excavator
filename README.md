@@ -48,7 +48,7 @@ In this case, you can select the number that you are interested. Say for you exa
 
 
 ## Changelog
-** `1.0` ** `2015.01.30` Initial version
+**`1.0`** `2015.01.30` Initial version
 
 
 ## License
