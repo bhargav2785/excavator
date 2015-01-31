@@ -1,9 +1,7 @@
 # Excavator
-===
 Excavator is a simple PHP script that downloads archived data from httparchive.org for a website. You can download .har file & .csv archive file. You can use those files to analyze the behavior of your site in terms of performance or just to see whether the site has improved over the time or its performace degraded.
 
 ## Download & Installation
----
 It has pretty straight forward downlod and installation guide.
 
 ~~~
@@ -15,7 +13,6 @@ It has pretty straight forward downlod and installation guide.
 ~~~
 
 ## Usage
----
 Its very simple, just invoke with php.
 
 ~~~
@@ -23,7 +20,6 @@ Its very simple, just invoke with php.
 ~~~
 
 ## Options
----
 The script has two mendatory options and one optional option.
 
 **`-s`**, required
@@ -40,7 +36,6 @@ If this option is set, the script will run normally except it won't actually dow
 
 
 ## Overview
----
 Sometimes it is possible that for a given search keyword it finds multiple websites. For example if your url is http://www.yahoo.com then it finds more than one websites that matched the term as shown below.
 
 1. `http://www.yahoo.com/`
@@ -53,10 +48,8 @@ In this case, you can select the number that you are interested. Say for you exa
 
 
 ## Changelog
----
 ** `1.0` ** `2015.01.30` Initial version
 
 
 ## License
----
 [WTF](http://www.wtfpl.net/) license
