@@ -1,0 +1,16 @@
+{
+    "name": "bhargav2785/excavator",
+    "description": "An httparchive.org download helper",
+    "minimum-stability": "stable",
+    "license": "WTF License",
+    "authors": [
+        {
+            "name": "Bhargav Vadher",
+            "email": "bhargav.sjsu@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {}
+}

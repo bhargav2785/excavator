@@ -7,6 +7,8 @@
  * @license     Publicly available to modify and redistribute.
  */
 
+require_once 'vendor/autoload.php';
+
 /**
  * Class Excavator
  */
