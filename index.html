@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Excavator by bhargav2785</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Excavator</h1>
+          <h2>An httparchive.org download helper</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/bhargav2785/excavator/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/bhargav2785/excavator/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/bhargav2785/excavator" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="excavator" class="anchor" href="#excavator" aria-hidden="true"><span class="octicon octicon-link"></span></a>Excavator</h1>
+
+<p>Excavator is a simple PHP script that downloads archived data from httparchive.org for a website. You can download .har file &amp; .csv archive file. You can use those files to analyze the behavior of your site in terms of performance or just to see whether the site has improved over the time or its performace degraded.</p>
+
+<h2>
+<a id="download--installation" class="anchor" href="#download--installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download &amp; Installation</h2>
+
+<p>It has pretty straight forward downlod and installation guide.</p>
+
+<pre><code>## install composer if you have not already
+&gt; curl -sS https://getcomposer.org/installer | php
+&gt; git clone https://github.com/bhargav2785/excavator.git
+&gt; cd excavator
+&gt; composer install
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Its very simple, just invoke with php.</p>
+
+<pre><code>&gt; php excavator.php [options]
+</code></pre>
+
+<h2>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<p>The script has two mendatory options and one optional option.</p>
+
+<p><strong><code>-s</code></strong>, required</p>
+
+<p>The url of the website</p>
+
+<p><strong><code>-d</code></strong>, required</p>
+
+<p>Where do you want to store it? Provide a path on your system.</p>
+
+<p><strong><code>--dry</code></strong>, optional</p>
+
+<p>If this option is set, the script will run normally except it won't actually download files.</p>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>There are two possible examples 1) dry run and 2) regular run</p>
+
+<pre><code>## search and process only
+&gt; php excavator.php -s http://www.yahoo.com -d /tmp/data --dry
+
+## search, process and download
+&gt; php excavator.php -s http://www.yahoo.com -d /tmp/data
+</code></pre>
+
+<h2>
+<a id="notes" class="anchor" href="#notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notes</h2>
+
+<p>Sometimes it is possible that for a given search keyword it finds multiple websites. For example if your url is <a href="http://www.yahoo.com">http://www.yahoo.com</a> then it finds more than one websites that matched the term as shown below.</p>
+
+<ol>
+<li><code>http://www.yahoo.com/</code></li>
+<li><code>http://www.yahoo.com.cn/</code></li>
+<li><code>http://www.yahoo.com.tw/</code></li>
+<li><code>http://www.yahoo.com.au/</code></li>
+<li><code>http://www.yahoo.com.br/</code></li>
+</ol>
+
+<p>In this case, you can select the number that you are interested. Say for you example you want archived data for <a href="http://www.yahoo.com/tw">http://www.yahoo.com/tw</a>, then you would go ahead and enter <code>3</code>. That will download the data for Yahoo Taiwan site. Or if you want to download data for all, you'd simply enter <code>all</code> and hit enter. </p>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<p><strong><code>1.0</code></strong> <code>2015.01.30</code> Initial version</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p><a href="http://www.wtfpl.net/">WTF</a> license</p>
+        </section>
+
+        <footer>
+          Excavator is maintained by <a href="https://github.com/bhargav2785">bhargav2785</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
